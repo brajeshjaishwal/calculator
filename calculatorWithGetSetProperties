@@ -7,7 +7,7 @@ var calculator = {
     lastOperation: operation.none,
     lastActivity: activity.none,
 
-    calculate (op, value) {
+    calculate: (op, value) => {
         if(value) {
             //its an operand
             if(this.lastActivity === activity.number) {
@@ -43,7 +43,7 @@ var calculator = {
             }
         }
     },
-    print () {
+    print: () => {
         let noresult = this.invalid || this.lastOperation !== operation.number
         console.log(noresult ? 'Invalid operation' : this.result)
     },
@@ -70,7 +70,7 @@ var calculator = {
         return this
     },
 
-    reset() {
+    reset: () => {
         result = null
         lastOperation = operation.none
         lastActivity = activity.none
