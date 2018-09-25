@@ -1,0 +1,86 @@
+var operation = { none: 'none', plus: 'plus', minus: 'minus', multiply: 'multiply', divide: 'divide' }
+var activity = { none: 'none', number: 'number', operation: 'operation'}
+
+class Calculator {
+
+    constructor() {
+        this.result = null;
+        this.invalid = false;
+        this.lastOperation = operation.none;
+        this.lastActivity = activity.none;
+    }
+
+    calculate(op, value) {
+        if(value) {
+            //its an operand
+            if(this.lastActivity === activity.number) {
+                this.invalid = true
+            } else {
+                this.lastActivity = activity.number
+                switch(this.lastOperation) {
+                    case operation.plus:
+                        this.result += value
+                        break
+                    case operation.minus:
+                        this.result -= value
+                        break
+                    case operation.multiply:
+                        this.result *= value
+                        break
+                    case operation.divide:
+                        this.result /= value
+                        break
+                        
+                    default:
+                    this.result = value
+                }
+                this.lastOperation = operation.number
+            }
+        }else {
+            //its an operation
+            if(this.lastActivity === activity.none || this.lastActivity === activity.operation) {
+                this.invalid = true
+            } else {
+                this.lastActivity = activity.operation
+                this.lastOperation = op
+            }
+        }
+    }
+    print() {
+        let noresult = this.invalid || this.lastOperation !== operation.number
+        console.log(noresult ? 'Invalid operation' : this.result)
+    }
+    get one(){
+        this.calculate(null, 1)
+        return this
+    }
+    get two() {
+        this.calculate(null, 2)
+        return this
+    }
+    get three () {
+        this.calculate(null, 3)
+        return this
+    }
+
+    get plus() {
+        this.calculate(operation.plus)
+        return this
+    }
+
+    get minus() {
+        this.calculate(operation.minus)
+        return this
+    }
+
+    reset() {
+        this.result = null
+        this.lastOperation = operation.none
+        this.lastActivity = activity.none
+        return this
+    }
+}
+
+var calc = new Calculator()
+var result = calc.one.plus.two.minus.three
+result.print()
